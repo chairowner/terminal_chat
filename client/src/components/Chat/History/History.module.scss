@@ -1,0 +1,8 @@
+.container {
+	overflow-y: auto;
+	white-space: break-spaces;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	flex: 1 1 auto;
+}

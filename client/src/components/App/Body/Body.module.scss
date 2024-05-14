@@ -1,0 +1,10 @@
+.container {
+  padding: var(--body-padding);
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &> :first-child {
+    margin-top: 0 !important;
+  }
+}

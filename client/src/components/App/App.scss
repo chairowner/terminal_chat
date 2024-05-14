@@ -1,0 +1,45 @@
+* {
+  color: var(--primary-color);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+a:hover,
+button:hover {
+  color: var(--primary-color-hover);
+}
+
+::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: var(--primary-color-placeholder);
+}
+
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: var(--primary-color-placeholder);
+  opacity: 1;
+}
+
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: var(--primary-color-placeholder);
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: var(--primary-color-placeholder);
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: var(--primary-color-placeholder);
+}
+
+::placeholder {
+  /* Most modern browsers support this now. */
+  color: var(--primary-color-placeholder);
+}

@@ -1,0 +1,25 @@
+.container {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+
+	.textarea {
+		flex: 1;
+		min-width: 300px;
+		resize: none;
+		background-color: transparent;
+		color: var(--primary-color);
+		border-color: var(--primary-color);
+		padding: 0.5rem;
+		outline: none;
+	}
+
+	.button {
+		cursor: pointer;
+		min-width: 100px;
+		background-color: transparent;
+		border-color: var(--primary-color);
+		outline: none;
+	}
+}

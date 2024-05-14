@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		"target": "ES6",
+		"module": "commonjs",
+		"outDir": "./build",
+		"rootDir": "./src",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"moduleResolution": "node",
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+		"allowJs": true,
+		"noImplicitAny": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"allowSyntheticDefaultImports": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	},
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules", "**/*.test.ts"],
+	"ts-node": {
+		"require": ["tsconfig-paths/register"],
+		"transpileOnly": true
+	}
+}

@@ -1,0 +1,25 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #1d1d1d;
+
+  .loading {
+    display: inline-block;
+    clip-path: inset(0 3ch 0 0);
+    animation: loading 1s steps(4) infinite;
+  }
+}
+
+
+@keyframes loading {
+  100% {
+    clip-path: inset(0 -1ch 0 0)
+  }
+}

@@ -1,0 +1,17 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px var(--body-background) inset;
+  box-shadow: 0 0 0px 1000px var(--body-background) inset;
+  -webkit-text-fill-color: var(--primary-color);
+}
+
+input:-moz-autofill,
+input:-moz-autofill:hover,
+input:-moz-autofill:focus,
+input:-moz-autofill:active {
+  -moz-box-shadow: 0 0 0px 1000px var(--body-background) inset;
+  box-shadow: 0 0 0px 1000px var(--body-background) inset;
+  color: var(--primary-color);
+}

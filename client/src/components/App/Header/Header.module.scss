@@ -1,0 +1,9 @@
+.container {
+  font-size: x-large;
+  background-color: var(--body-background);
+  padding: var(--body-padding);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
