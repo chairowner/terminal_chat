@@ -1,4 +1,4 @@
 node_modules
+/storage
 /server/build
 /client/build
-/storage
