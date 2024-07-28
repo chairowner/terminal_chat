@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, KeyboardEvent, MouseEvent } from "react";
+import { ChangeEvent, FC, KeyboardEvent, MouseEvent, RefObject } from "react";
 import s from "./ChatInput.module.scss";
 
 export const ChatInput: FC<{
@@ -6,7 +6,14 @@ export const ChatInput: FC<{
 	onChangeMessageTextarea(text: string): void;
 	sendMessage(): void;
 	waiting: boolean;
-}> = ({ message, waiting, onChangeMessageTextarea, sendMessage }) => {
+	textAreaRef: RefObject<HTMLTextAreaElement>;
+}> = ({
+	message,
+	waiting,
+	onChangeMessageTextarea,
+	sendMessage,
+	textAreaRef,
+}) => {
 	const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		onChangeMessageTextarea(e.currentTarget.value);
 	};
@@ -26,6 +33,7 @@ export const ChatInput: FC<{
 	return (
 		<div className={s.container}>
 			<textarea
+				ref={textAreaRef}
 				disabled={waiting}
 				className={s.textarea}
 				value={message}

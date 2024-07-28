@@ -72,7 +72,6 @@ export const Header: FC = () => {
 				},
 			]);
 		}
-		console.log(typeof __DEBUG__);
 
 		return (
 			<>

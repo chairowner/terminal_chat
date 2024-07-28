@@ -31,10 +31,18 @@ const Chat: FC = () => {
 	const [waiting, setWaiting] = useState<boolean>(false);
 	const [history, setHistory] = useState<IMessage[]>([]);
 	const historyRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+	const textAreaRef: RefObject<HTMLTextAreaElement> =
+		useRef<HTMLTextAreaElement>(null);
 	const [fetching, setFetching] = useState<boolean>(true);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
-	const scrollToBottom = () => {
+	const focusTextArea = (): void => {
+		if (textAreaRef?.current) {
+			textAreaRef.current.focus();
+		}
+	};
+
+	const scrollToBottom = (): void => {
 		if (historyRef.current) {
 			const t = setTimeout(() => {
 				if (historyRef.current) {
@@ -52,6 +60,7 @@ const Chat: FC = () => {
 	const renderMessage = (res: { message?: IDBMessage; error?: string }) => {
 		if (!res?.message) {
 			setWaiting(false);
+			focusTextArea();
 			return console.error("renderMessage", res);
 		}
 
@@ -64,6 +73,7 @@ const Chat: FC = () => {
 		setMessage("");
 		scrollToBottom();
 		setWaiting(false);
+		focusTextArea();
 	};
 
 	const sendMessage = (): void => {
@@ -73,6 +83,7 @@ const Chat: FC = () => {
 
 		if (!Validator.Message(msg)) {
 			setWaiting(false);
+			focusTextArea();
 			return console.error("sendMessage", "invalid message format", msg);
 		}
 
@@ -122,8 +133,6 @@ const Chat: FC = () => {
 		// иначе сохраняем позицию скролла
 		const oldTargetScrollHeight: number = target.scrollHeight;
 		setTimeout(() => {
-			// const maxScrollTop: number = target.scrollHeight - target.clientHeight;
-			// console.log({ maxScrollTop });
 			target.scrollTo({ top: target.scrollHeight - oldTargetScrollHeight });
 		}, 0);
 	};
@@ -151,7 +160,8 @@ const Chat: FC = () => {
 		if (!fetching) {
 			// указываем, что нужно подгрузить ещё сообщений, если не хватило первой партии
 			const pos: HistoryScrollPos = getHistoryScrollPos();
-			if (pos.top) {
+			console.log(pos);
+			if (pos.top && !pos.bottom) {
 				setFetching(true);
 			}
 			return;
@@ -180,6 +190,12 @@ const Chat: FC = () => {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (!waiting) {
+			focusTextArea();
+		}
+	}, [waiting]);
+
 	return (
 		<HelmetProvider>
 			<Helmet>
@@ -188,6 +204,7 @@ const Chat: FC = () => {
 			<div className={s.container}>
 				<History history={history} ref={historyRef} />
 				<ChatInput
+					textAreaRef={textAreaRef}
 					waiting={waiting}
 					message={message}
 					onChangeMessageTextarea={onChangeMessageTextarea}
