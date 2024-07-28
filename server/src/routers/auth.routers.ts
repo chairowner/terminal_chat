@@ -86,10 +86,10 @@ authRouter.post("/login", async function (req: Request, res: Response) {
 		const { login, password }: ICreateUser = req.body;
 		const user: IUser | null = await TableUser.findOne({ login });
 		if (!user || !user.id) {
-			return res.status(400).json({ message: "user is not found" });
+			return res.status(400).json({ message: "user or password is wrong" });
 		}
 		if (!bcrypt.compareSync(password, user.password)) {
-			return res.status(400).json({ message: "invalid password" });
+			return res.status(400).json({ message: "user or password is wrong" });
 		}
 		return res.json({
 			token: generateToken(user.id),
@@ -111,8 +111,15 @@ authRouter.get(
 		try {
 			const user = await TableUser.findOne({ id: req.user.payload.id });
 			if (!user || !user.id) {
+				console.log(
+					"[authRouter]",
+					"[auth]",
+					"user is not found",
+					req?.user?.payload?.id
+				);
 				return res.status(400).json({ message: "user is not found" });
 			}
+			console.log("authRouter", "auth", "success", user.id);
 			return res.json({
 				token: generateToken(user.id),
 				user: {
@@ -121,6 +128,7 @@ authRouter.get(
 				},
 			});
 		} catch (e) {
+			console.log("authRouter", "auth", "server error", res);
 			return res.json({ message: "server error" });
 		}
 	}

@@ -1,6 +1,5 @@
 import express from "express";
 import authRouter from "./routers/auth.routers";
-import messagesRouter from "./routers/messages.routers";
 import { sequelize } from "./configs/db.connect.config";
 import { corsMiddleware } from "./middleware/cors.middleware";
 import { setupSocketHandlers } from "./handlers/socketHandlers";
@@ -25,7 +24,6 @@ sequelize.sync();
 app.use(corsMiddleware);
 app.use(express.json());
 app.use("/api/auth", authRouter);
-app.use("/api/messages", messagesRouter);
 
 setupSocketHandlers(io);
 

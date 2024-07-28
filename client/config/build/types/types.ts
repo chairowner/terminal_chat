@@ -17,4 +17,6 @@ export interface BuildOptions {
 	mode: BuildMode;
 	platform: BuildPlatform;
 	bundleAnalyze?: boolean;
+	devServer: boolean;
+	debug: boolean;
 }

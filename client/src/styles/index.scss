@@ -44,6 +44,35 @@
   background-color: var(--primary-color-hover);
 }
 
+/*** Works on common browsers ***/
+::selection {
+  background-color: var(--primary-color-hover);
+  color: #fff;
+}
+
+/*** Mozilla based browsers ***/
+::-moz-selection {
+  background-color: var(--primary-color-hover);
+  color: #fff;
+}
+
+/***For Other Browsers ***/
+::-o-selection {
+  background-color: var(--primary-color-hover);
+  color: #fff;
+}
+
+::-ms-selection {
+  background-color: var(--primary-color-hover);
+  color: #fff;
+}
+
+/*** For Webkit ***/
+::-webkit-selection {
+  background-color: var(--primary-color-hover);
+  color: #fff;
+}
+
 body {
   font-family: monospace;
   font-size: 18px;

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, MouseEvent, useState } from "react";
 import s from "./index.module.scss";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -14,11 +14,14 @@ interface IValid {
 }
 
 export const LoginForm: FC = () => {
-	const isAuth = useSelector((state: any) => state.user.isAuth);
+	const isAuth: boolean = useSelector((state: any) => state.user.isAuth);
+	const dispatch = useDispatch<any>();
 	const [waiting, setWaiting] = useState<boolean>(false);
 	const [login, setLogin] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
-	const dispatch = useDispatch<any>();
+	const [formInfo, setFormInfo] = useState<string>(
+		"Enter a username and password"
+	);
 
 	if (isAuth) {
 		return <Navigate to="/" />;
@@ -26,27 +29,37 @@ export const LoginForm: FC = () => {
 
 	const logIn = (): void => {
 		setWaiting(true);
+
 		const valid: IValid = {
 			log: Validator.Login(login),
 			pass: Validator.Password(password),
 			next: false,
 		};
-		valid.next = valid.log && valid.pass;
-		if (valid.next) {
-			dispatch(toLogin(login, password)).then(() => {
-				return setWaiting(false);
-			});
-		} else {
-			console.log(valid);
-		}
-	};
 
-	const logIn1 = (): void => {
-		setWaiting(true);
+		valid.next = valid.log && valid.pass;
+
+		if (!valid.next) {
+			if (!valid.log && !valid.pass) {
+				setFormInfo("Error filling in the fields");
+			} else if (!valid.log) {
+				setFormInfo("Error filling in the login field");
+			} else {
+				setFormInfo("Error filling in the password field");
+			}
+			return setWaiting(false);
+		}
+
+		dispatch(toLogin(login, password)).then((res: any) => {
+			setWaiting(false);
+			if (res?.message != null) {
+				setFormInfo(res.message);
+			}
+		});
 	};
 
 	return (
 		<div className={s.container}>
+			<span className={s.item}>[{formInfo}]</span>
 			<label className={s.item}>
 				<span>Login:</span>
 				<Input
@@ -80,13 +93,21 @@ export const LoginForm: FC = () => {
 				disabled={waiting}
 				className={s.button}
 				children={waiting ? "Waiting..." : "Login"}
-				onClick={() => logIn()}
+				onClick={logIn}
 			/>
-			<Button disabled={waiting} className={s.button}>
-				<Link to={"/registration"} style={{ textDecoration: "none" }}>
+			<Link
+				to={"/registration"}
+				onClick={(e) => {
+					if (waiting) {
+						e.preventDefault();
+					}
+				}}
+				style={{ textDecoration: "none" }}
+			>
+				<Button disabled={waiting} className={s.button}>
 					{waiting ? "Waiting..." : "No account? Create it!"}
-				</Link>
-			</Button>
+				</Button>
+			</Link>
 		</div>
 	);
 };

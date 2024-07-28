@@ -2,7 +2,6 @@ import Response from "./Response";
 import { IMessage } from "@/interfaces/database";
 import { MessageModel } from "@/models/MessageModel";
 import { UserModel } from "@/models/UserModel";
-import e from "express";
 import { FindOptions, WhereOptions } from "sequelize";
 
 export type CreateMessageInput = Omit<
@@ -46,12 +45,18 @@ export class TableMessage {
 		return response;
 	}
 
-	static async read(limit: number = 10): Promise<IMessage[]> {
-		let data: IMessage[] = [];
+	static async read(
+		offset?: number,
+		limit: number = 30
+	): Promise<{
+		rows: IMessage[];
+		count: number;
+	}> {
 		try {
 			const options: FindOptions<MessageModel> = {
 				limit,
-				order: [["created_at", "ASC"]],
+				offset,
+				order: [["created_at", "DESC"]],
 				include: [
 					{
 						model: UserModel,
@@ -59,12 +64,25 @@ export class TableMessage {
 					},
 				],
 			};
-			data = await MessageModel.findAll(options);
-			this.log({ tag: "read", data });
-		} catch (error) {
-			console.error(error);
+			const result = await MessageModel.findAndCountAll(options);
+			result.rows.reverse();
+			return result;
+		} catch (_e) {
+			console.error(_e);
+			return {
+				rows: [],
+				count: 0,
+			};
 		}
-		return data;
+	}
+
+	static async getTotalCount(): Promise<number | null> {
+		try {
+			return await MessageModel.count();
+		} catch (_e) {
+			console.error(_e);
+			return null;
+		}
 	}
 
 	static async update(id: string, message: IMessage): Promise<void> {
@@ -72,8 +90,8 @@ export class TableMessage {
 		try {
 			const where: WhereOptions<IMessage> = { id };
 			await MessageModel.update(message, { where });
-		} catch (error) {
-			console.error(error);
+		} catch (_e) {
+			console.error(_e);
 		}
 	}
 
@@ -81,8 +99,8 @@ export class TableMessage {
 		this.log({ tag: "delete" });
 		try {
 			await MessageModel.destroy({ where: { id } });
-		} catch (error) {
-			console.error(error);
+		} catch (_e) {
+			console.error(_e);
 		}
 	}
 

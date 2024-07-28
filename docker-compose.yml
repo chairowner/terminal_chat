@@ -14,7 +14,6 @@ services:
       - "${DB_ADDR}:3306"
     volumes:
       - "${STORAGE_DB_PATH}:/var/lib/mysql"
-      # - "${CFG_DB_INIT_PATH}:/docker-entrypoint-initdb.d"
 
   phpmyadmin:
     image: phpmyadmin:latest

@@ -2,8 +2,9 @@ import { setUser } from "@/reducers/userReducer";
 import { Dispatch } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 
-const API_URL: string = "http://localhost:3000/api/";
-const API_SUB_URL = API_URL + "auth/";
+const API_URL: string = `${__SERVER_URL__}/api`;
+const API_SUB = "auth";
+const API_SUB_URL = `${API_URL}/${API_SUB}/`;
 
 export const registration = async (login: string, password: string) => {
 	const tag = "registration";
@@ -13,18 +14,19 @@ export const registration = async (login: string, password: string) => {
 			login,
 			password,
 		});
-		console.log(response.data.message);
+		return { status: true, message: response.data.message };
 	} catch (_e) {
 		if (axios.isAxiosError(_e)) {
 			const e: AxiosError<{ message: string }> = _e;
-			if (e.response?.data?.message) {
-				console.error(e.response.data.message);
-			} else {
-				console.error("no server response");
-			}
+			return {
+				status: false,
+				message: e.response?.data?.message
+					? e.response.data.message
+					: "no server response",
+			};
 		} else {
 			console.error(_e);
-			console.error(tag + " server error");
+			return { status: false, message: "server error" };
 		}
 	}
 };
@@ -40,17 +42,18 @@ export const login = (login: string, password: string) => {
 			});
 			dispatch(setUser(response.data.user));
 			localStorage.setItem("token", response.data.token);
+			return { status: true, message: "success!" };
 		} catch (_e) {
 			if (axios.isAxiosError(_e)) {
 				const e: AxiosError<{ message: string }> = _e;
-				if (e.response?.data?.message) {
-					console.error(e.response.data.message);
-				} else {
-					console.error("no server response");
-				}
-			} else {
-				console.error(tag + " server error");
+				return {
+					status: false,
+					message: e.response?.data?.message
+						? e.response.data.message
+						: "no server response",
+				};
 			}
+			return { status: false, message: "server error" };
 		}
 	};
 };

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { About } from "../About";
 
 const Main: FC = () => {
-	const isAuth = useSelector((state: any) => state.user.isAuth);
+	const isAuth: boolean = useSelector((state: any) => state.user.isAuth);
 	return isAuth ? <Chat /> : <About />;
 };
 

@@ -10,6 +10,7 @@ import path from "path";
 
 export function buildPlugins({
 	mode,
+	debug,
 	paths,
 	bundleAnalyze,
 	platform,
@@ -26,6 +27,7 @@ export function buildPlugins({
 			minify: isProd,
 		}),
 		new DefinePlugin({
+			__DEBUG__: JSON.stringify(debug),
 			__PLATFORM__: JSON.stringify(platform),
 			__SERVER_URL__: JSON.stringify(serverUrl),
 			__SOCKET_SERVER_URL__: JSON.stringify(socketServerUrl),

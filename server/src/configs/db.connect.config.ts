@@ -9,6 +9,7 @@ const sequelizeOptions: SequelizeOptions = {
 	password: "terminal_chat",
 	host: "localhost",
 	port: 3306,
+	logging: false,
 	dialectOptions: {
 		connectTimeout: 60000,
 	},

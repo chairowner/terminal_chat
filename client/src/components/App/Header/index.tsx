@@ -1,42 +1,132 @@
-import { Link } from "react-router-dom";
-import s from "./Header.module.scss";
+import { Link, Location, Navigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/reducers/userReducer";
+import s from "./Header.module.scss";
+import classNames from "classnames";
+import { CSSProperties, FC, MouseEventHandler, ReactNode } from "react";
 
-const debug: boolean = true;
+interface IHeaderItem {
+	type?: "lnk" | "a" | "div";
+	path?: string;
+	target?: "blank";
+	style?: CSSProperties;
+	onClick?: MouseEventHandler<HTMLAnchorElement>;
+	children: ReactNode;
+}
 
-export const Header = () => {
-	const isAuth = useSelector((state: any) => state.user.isAuth);
-	const dispatch = useDispatch<any>();
+export const Header: FC = () => {
+	const isAuth: boolean = useSelector((state: any) => state.user.isAuth);
+	const dispatch: any = useDispatch<any>();
+	const location: Location = useLocation();
 
-	return (
-		<header className={s.container}>
-			{isAuth ? (
-				<>
-					<Link to={"/"}>Chat</Link>
-					<Link to={"/about"}>About</Link>
-					<a onClick={() => dispatch(logout())}>Log out</a>
-				</>
-			) : (
-				<>
-					<Link to={"/"}>About</Link>
-					<Link to={"/login"}>Log in</Link>
-				</>
-			)}
-			{debug ? (
-				<>
-					<div>|</div>
-					<Link to={"404"}>404</Link>
-					<a
-						href="http://127.0.0.1:15342"
-						target="blank"
-						style={{ cursor: "alias" }}
-					>
-						<span style={{ color: "#6c78af" }}>php</span>
-						<span style={{ color: "#f89c0e" }}>MyAdmin</span>
-					</a>
-				</>
-			) : null}
-		</header>
-	);
+	const renderItems = (isAuth: boolean) => {
+		let items: IHeaderItem[] = isAuth
+			? [
+					{
+						path: "/",
+						children: "Chat",
+					},
+					{
+						path: "/about",
+						children: "About",
+					},
+					{
+						type: "a",
+						children: "Logout",
+						onClick: () => {
+							dispatch(logout());
+						},
+					},
+			  ]
+			: [
+					{
+						path: "/",
+						children: "About",
+					},
+					{
+						path: "/login",
+						children: "Login",
+					},
+			  ];
+		if (__DEBUG__) {
+			items = items.concat([
+				{
+					type: "div",
+					children: "|",
+				},
+				{
+					path: "/404",
+					children: "404",
+				},
+				{
+					type: "a",
+					path: "http://127.0.0.1:3307",
+					children: (
+						<>
+							<span style={{ color: "#6c78af" }}>php</span>
+							<span style={{ color: "#f89c0e" }}>MyAdmin</span>
+						</>
+					),
+					target: "blank",
+					style: { cursor: "alias" },
+				},
+			]);
+		}
+		console.log(typeof __DEBUG__);
+
+		return (
+			<>
+				{items.map((item, index) => {
+					switch (item?.type) {
+						case "a":
+							return (
+								<a
+									style={item?.style}
+									key={index}
+									href={item?.path}
+									className={classNames(
+										s.item,
+										location.pathname === item?.path ? s.selected : null
+									)}
+									target={item?.target}
+									onClick={item?.onClick}
+									children={item.children}
+								/>
+							);
+
+						case "div":
+							return (
+								<div
+									style={item?.style}
+									key={index}
+									className={classNames(
+										s.item,
+										location.pathname === item?.path ? s.selected : null
+									)}
+								>
+									{item.children}
+								</div>
+							);
+
+						default:
+							return (
+								<Link
+									key={index}
+									style={item?.style}
+									to={item?.path || "/404"}
+									className={classNames(
+										s.item,
+										location.pathname === item?.path ? s.selected : null
+									)}
+									onClick={item?.onClick}
+									children={item.children}
+								/>
+							);
+					}
+				})}
+			</>
+		);
+	};
+
+	return <header className={s.container}>{renderItems(isAuth)}</header>;
 };

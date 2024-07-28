@@ -13,6 +13,8 @@ interface EnvVariables {
 	port: number;
 	mode: BuildMode;
 	bundleAnalyze: boolean;
+	devServer: boolean;
+	debug: boolean;
 	platform: BuildPlatform;
 }
 
@@ -26,8 +28,10 @@ export default (env: EnvVariables) => {
 	};
 
 	const config: Configuration = buildWebpack({
+		devServer: env.devServer || false,
+		debug: env.debug || false,
 		port: env.port || 3001,
-		mode: env.mode || "development",
+		mode: env.mode || "production",
 		platform: env.platform || "desktop",
 		serverUrl: env.serverUrl || "http://localhost:3000",
 		socketServerUrl: env.socketServerUrl || "http://localhost:3002",

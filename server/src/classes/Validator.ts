@@ -6,7 +6,7 @@ export interface IValidatorText {
 export default class Validator {
 	public static Message = (text: string): boolean => {
 		try {
-			return /^.{1,1000}$/u.test(text);
+			return /^.{1,1000}$/mu.test(text);
 		} catch (e) {
 			console.error(e);
 			return false;

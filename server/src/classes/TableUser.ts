@@ -19,7 +19,7 @@ export class TableUser {
 	static async create(data: ICreateUser): Promise<Response<string[]>> {
 		const response = new Response<string[]>();
 		try {
-			const res: UserModel = await UserModel.create(data);
+			await UserModel.create(data);
 			response.info.push("Пользователь создан");
 			response.status = true;
 		} catch (_e) {
@@ -42,43 +42,55 @@ export class TableUser {
 			} else {
 				response.info.push(e.message);
 			}
-
 			response.status = false;
 		}
 		return response;
 	}
 
 	static async read(): Promise<IUser[]> {
-		let data: IUser[] = [];
 		try {
-			data = await UserModel.findAll();
-			// this.log({ tag: "read", data });
-		} catch (error) {
-			console.error(error);
+			return await UserModel.findAll();
+		} catch (_e) {
+			console.error(_e);
+			return [];
 		}
-		return data;
 	}
 
 	static async find(where: WhereOptions<IUser>): Promise<IUser[]> {
-		let data: IUser[] = [];
 		try {
-			data = await UserModel.findAll({ where });
-			// this.log({ tag: "findByLogin", data });
-		} catch (error) {
-			console.error(error);
+			return await UserModel.findAll({ where });
+		} catch (_e) {
+			console.error(_e);
+			return [];
 		}
-		return data;
 	}
 
 	static async findOne(where: WhereOptions<IUser>): Promise<IUser | null> {
-		let data: IUser | null = null;
 		try {
-			data = await UserModel.findOne({ where });
-			// this.log({ tag: "findByLogin", data });
-		} catch (error) {
-			console.error(error);
+			return await UserModel.findOne({ where });
+		} catch (_e) {
+			console.error(_e);
+			return null;
 		}
-		return data;
+	}
+
+	static async checkAuth(id: string): Promise<{ error?: string }> {
+		try {
+			const findUser: IUser | null = await TableUser.findOne({ id });
+			if (!findUser) {
+				return { error: "auth error: user is not found" };
+			}
+			if (findUser.deleted) {
+				return { error: "auth error: user is deleted" };
+			}
+			if (findUser.banned) {
+				return { error: "auth error: user is banned" };
+			}
+			return {};
+		} catch (_e) {
+			console.error("[checkAuth]", id, _e);
+			return { error: "server error" };
+		}
 	}
 
 	static async update(id: number, user: IUser): Promise<void> {

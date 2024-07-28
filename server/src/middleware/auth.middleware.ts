@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import cfg from "config";
 
@@ -27,7 +27,6 @@ export function authMiddleware(req: any, res: Response, next: NextFunction) {
 		req.user = jwt.verify(token, secretKey);
 		next();
 	} catch (e) {
-		console.error("authMiddleware", e);
 		return res.status(401).json({ message: "auth error" });
 	}
 }

@@ -1,9 +1,9 @@
 import { IMessage } from "@/interfaces/database";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-const API_URL: string = "http://localhost:3000/api/";
+const API_URL: string = `${__SERVER_URL__}/api`;
 const API_SUB = "messages";
-const API_SUB_URL = API_URL + API_SUB + "/";
+const API_SUB_URL = `${API_URL}/${API_SUB}/`;
 
 export interface ResponseMessage {
 	message?: string;
@@ -15,9 +15,11 @@ export const getMessages = async (): Promise<ResponseMessage> => {
 	const url = API_SUB_URL + tag;
 	try {
 		const res: AxiosResponse = await axios.get(url);
+
 		if (!res.data) {
 			return { message: "messages are not found", data: [] };
 		}
+
 		return { data: res.data };
 	} catch (_e) {
 		if (axios.isAxiosError(_e)) {
@@ -27,7 +29,9 @@ export const getMessages = async (): Promise<ResponseMessage> => {
 			}
 			return { message: "no server response", data: [] };
 		}
+
 		console.error(_e);
+
 		return { message: "server error", data: [] };
 	}
 };

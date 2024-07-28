@@ -1,36 +1,44 @@
-import { FC } from "react";
+import { forwardRef, RefObject } from "react";
 import s from "./History.module.scss";
 import { IMessage } from "@/interfaces/database";
 
 interface IHistory {
 	history: IMessage[];
+	ref: RefObject<HTMLDivElement>;
 }
 
-export const History: FC<IHistory> = ({ history }) => {
-	return (
-		<div className={s.container}>
-			{history && history.length ? (
-				history.map((item) => (
-					<span key={item.id}>
-						[{item.created_at}][{item.user.login}]:{" "}
-						{item.deleted ? (
-							<span
-								style={{
-									fontSize: "14px",
-									fontStyle: "italic",
-									fontWeight: "bold",
-								}}
-							>
-								*deleted*
-							</span>
-						) : (
-							item.text
-						)}
-					</span>
-				))
-			) : (
-				<p>Пока что в чате нет сообщений</p>
-			)}
-		</div>
-	);
-};
+export const History = forwardRef<HTMLDivElement, IHistory>(
+	({ history }, ref) => {
+		return (
+			<div className={s.container} ref={ref}>
+				{history && history.length ? (
+					history.map((item) => {
+						return (
+							<div className={s.item} key={item.id}>
+								<span
+									className={s.messageInfo}
+									title={item.created_at?.toLocaleString("en")}
+								>
+									<span>
+										[
+										{item.user?.login ?? (
+											<span className={s.deleted}>*deleted*</span>
+										)}
+										]:
+									</span>
+								</span>
+								{item.deleted ? (
+									<span className={s.deleted}>*deleted*</span>
+								) : (
+									<span>{item.text}</span>
+								)}
+							</div>
+						);
+					})
+				) : (
+					<p>Пока что в чате нет сообщений</p>
+				)}
+			</div>
+		);
+	}
+);

@@ -4,9 +4,10 @@ import { buildLoaders } from "./buildLoaders";
 import { buildPlugins } from "./buildPlugins";
 import { buildResolvers } from "./buildResolvers";
 import { BuildOptions } from "./types/types";
+import TerserPlugin from "terser-webpack-plugin";
 
 export function buildWebpack(options: BuildOptions): Configuration {
-	const { mode, paths } = options;
+	const { mode, paths, devServer } = options;
 	const isDev = mode === "development";
 
 	const webpack: Configuration = {
@@ -26,13 +27,21 @@ export function buildWebpack(options: BuildOptions): Configuration {
 			filename: "js/[name].[contenthash].js",
 			publicPath: "/",
 		},
-		devtool: false,
-		devServer: undefined,
+		// optimization: {
+		// 	minimize: true,
+		// 	minimizer: [
+		// 		new TerserPlugin({
+		// 			terserOptions: {
+		// 				compress: {
+		// 					drop_console: true,
+		// 				},
+		// 			},
+		// 		}),
+		// 	],
+		// },
+		devtool: isDev ? "inline-source-map" : false,
+		devServer: devServer ? buildDevServer(options) : undefined,
 	};
-	if (isDev) {
-		webpack.devtool = "inline-source-map";
-		webpack.devServer = buildDevServer(options);
-	}
 
 	return webpack;
 }

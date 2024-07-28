@@ -1,8 +1,45 @@
 .container {
-	overflow-y: auto;
-	white-space: break-spaces;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
-	flex: 1 1 auto;
+  overflow-y: auto;
+  white-space: break-spaces;
+  overflow-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1 1 auto;
+
+  .item {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+
+    .messageInfo {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .deleted {
+      font-size: 14px;
+      font-style: italic;
+      font-weight: bold;
+    }
+  }
+
+}
+
+@media (max-width:1024px) {
+  .container {
+    font-size: 16px;
+
+    .item {
+      flex-direction: column;
+
+      .messageInfo {
+        flex-direction: column;
+      }
+
+      .deleted {
+        font-size: "12px";
+      }
+    }
+  }
 }
