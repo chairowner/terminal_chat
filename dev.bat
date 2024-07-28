@@ -8,4 +8,4 @@ if errorlevel 1 (
     goto wait_for_docker
 )
 start "dev:server" cmd /k "docker-compose -p terminal_chat up -d --build && cd server && npm i && npm run dev"
-start "dev:client" cmd /k "cd client && npm i && npm run dev:debung"
+start "dev:client" cmd /k "cd client && npm i && npm run dev"
