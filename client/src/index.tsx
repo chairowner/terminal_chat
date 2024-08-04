@@ -1,6 +1,6 @@
 import "@/styles/normalize.scss";
 import "@/styles/index.scss";
-import { StrictMode, Suspense } from "react";
+import { Suspense } from "react";
 import { createRoot, Root } from "react-dom/client";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { App } from "@/components/App";

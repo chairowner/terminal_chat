@@ -58,9 +58,11 @@ export const Header: FC = () => {
 					path: "/404",
 					children: "404",
 				},
-				{
+			]);
+			if (__PHPMYADMIN_URL__) {
+				items.push({
 					type: "a",
-					path: "http://127.0.0.1:3307",
+					path: "http://locslhost:8080",
 					children: (
 						<>
 							<span style={{ color: "#6c78af" }}>php</span>
@@ -69,8 +71,8 @@ export const Header: FC = () => {
 					),
 					target: "blank",
 					style: { cursor: "alias" },
-				},
-			]);
+				});
+			}
 		}
 
 		return (

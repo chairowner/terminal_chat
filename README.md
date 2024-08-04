@@ -2,32 +2,26 @@
 
 ## Introduction / Предисловие
 
-This chat on WebSockets was created by _chairowner_ in 2024 **as part of the self-study of libraries**.\
+This chat on WebSockets was created by _chairowner_ in 2024 **for study of libraries**.\
 If you want to use its basis to implement your idea, do it at your own risk, because this code was written at night after work (•‿•)\
 Please inform me that you have taken the code. I will be glad to see your final result.
 
 ---
 
-Этот чат на веб-сокетах был создан _chairowner_ в 2024 году **в рамках самостоятельного изучения библиотек**.\
+Этот чат на веб-сокетах был создан _chairowner_ в 2024 году **для изучения библиотек**.\
 Если вы хотите использовать его основу для реализации своей идеи, делайте это на свой страх и риск, т.к. код писался ночами после работы (•‿•)\
 Пожалуйста, сообщите мне, если вы взяли код. Я буду рад увидеть ваш окончательный результат.
 
 ## Screenshots / Скриншоты
 
-<figure>
-  <img src="./res/images/chat.png" alt="chat" />
-  <figcaption>Chat page</figcaption>
-</figure>
+**Chat page**\
+![chat](./res/images/chat.png)
 
-<figure>
-  <img src="./res/images/login.png" alt="login" />
-  <figcaption>Login page</figcaption>
-</figure>
+**Login page**\
+![login](./res/images/login.png)
 
-<figure>
-  <img src="./res/images/registration.png" alt="registration" />
-  <figcaption>Registration page</figcaption>
-</figure>
+**Registration page**\
+![registration](./res/images/registration.png)
 
 ## Startup / Запуск
 
@@ -38,6 +32,10 @@ You can also run it via **Docker Swarm** `./stack.yml`
 
 Для начала установите **docker-compose** / **Docker Desktop**. С его помощью будет запускаться база данных.\
 Также можно запустить через **Docker Swarm** `./stack.yml`
+
+- `docker build -t local/terminal_chat_client:latest -f ./docker/client/Dockerfile .`
+- `docker build -t local/terminal_chat_server:latest -f ./docker/server/Dockerfile .`
+- `docker stack deploy -c ./stack.yml --detach=false terminal_chat`
 
 ### Windows
 

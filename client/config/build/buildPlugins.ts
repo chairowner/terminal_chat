@@ -16,6 +16,7 @@ export function buildPlugins({
 	platform,
 	serverUrl,
 	socketServerUrl,
+	phpMyAdminUrl,
 }: BuildOptions): Configuration["plugins"] {
 	const isProd = mode === "production";
 	const isDev = mode === "development";
@@ -31,6 +32,7 @@ export function buildPlugins({
 			__PLATFORM__: JSON.stringify(platform),
 			__SERVER_URL__: JSON.stringify(serverUrl),
 			__SOCKET_SERVER_URL__: JSON.stringify(socketServerUrl),
+			__PHPMYADMIN_URL__: JSON.stringify(phpMyAdminUrl),
 		}),
 	];
 

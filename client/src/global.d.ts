@@ -1,6 +1,7 @@
 declare const __DEBUG__: boolean;
 declare const __PLATFORM__: "mobile" | "desktop";
 declare const __SERVER_URL__: string;
+declare const __PHPMYADMIN_URL__: string | null;
 declare const __SOCKET_SERVER_URL__: string;
 declare module "*.txt";
 declare module "*.md";

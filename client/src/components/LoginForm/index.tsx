@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, MouseEvent, useState } from "react";
+import { ChangeEvent, FC, FormEvent, MouseEvent, useState } from "react";
 import s from "./index.module.scss";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
@@ -27,7 +27,9 @@ export const LoginForm: FC = () => {
 		return <Navigate to="/" />;
 	}
 
-	const logIn = (): void => {
+	const logIn = (e: FormEvent<HTMLFormElement>): void => {
+		e.preventDefault();
+
 		setWaiting(true);
 
 		const valid: IValid = {
@@ -58,7 +60,7 @@ export const LoginForm: FC = () => {
 	};
 
 	return (
-		<div className={s.container}>
+		<form onSubmit={logIn} className={s.container}>
 			<span className={s.item}>[{formInfo}]</span>
 			<label className={s.item}>
 				<span>Login:</span>
@@ -90,10 +92,10 @@ export const LoginForm: FC = () => {
 				/>
 			</label>
 			<Button
+				type="submit"
 				disabled={waiting}
 				className={s.button}
 				children={waiting ? "Waiting..." : "Login"}
-				onClick={logIn}
 			/>
 			<Link
 				to={"/registration"}
@@ -108,6 +110,6 @@ export const LoginForm: FC = () => {
 					{waiting ? "Waiting..." : "No account? Create it!"}
 				</Button>
 			</Link>
-		</div>
+		</form>
 	);
 };

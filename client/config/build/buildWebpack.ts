@@ -7,7 +7,7 @@ import { BuildOptions } from "./types/types";
 import TerserPlugin from "terser-webpack-plugin";
 
 export function buildWebpack(options: BuildOptions): Configuration {
-	const { mode, paths, devServer } = options;
+	const { mode, paths, devServer, debug } = options;
 	const isDev = mode === "development";
 
 	const webpack: Configuration = {
@@ -27,18 +27,18 @@ export function buildWebpack(options: BuildOptions): Configuration {
 			filename: "js/[name].[contenthash].js",
 			publicPath: "/",
 		},
-		// optimization: {
-		// 	minimize: true,
-		// 	minimizer: [
-		// 		new TerserPlugin({
-		// 			terserOptions: {
-		// 				compress: {
-		// 					drop_console: true,
-		// 				},
-		// 			},
-		// 		}),
-		// 	],
-		// },
+		optimization: {
+			minimize: true,
+			minimizer: [
+				new TerserPlugin({
+					terserOptions: {
+						compress: {
+							drop_console: !debug,
+						},
+					},
+				}),
+			],
+		},
 		devtool: isDev ? "inline-source-map" : false,
 		devServer: devServer ? buildDevServer(options) : undefined,
 	};

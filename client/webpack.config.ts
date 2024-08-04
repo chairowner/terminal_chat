@@ -9,6 +9,7 @@ import path from "path";
 
 interface EnvVariables {
 	serverUrl: string;
+	phpMyAdminUrl: string | null;
 	socketServerUrl: string;
 	port: number;
 	mode: BuildMode;
@@ -28,13 +29,14 @@ export default (env: EnvVariables) => {
 	};
 
 	const config: Configuration = buildWebpack({
+		phpMyAdminUrl: env.phpMyAdminUrl || null,
 		devServer: env.devServer || false,
 		debug: env.debug || false,
-		port: env.port || 3001,
+		port: env.port || 80,
 		mode: env.mode || "production",
 		platform: env.platform || "desktop",
 		serverUrl: env.serverUrl || "http://localhost:3000",
-		socketServerUrl: env.socketServerUrl || "http://localhost:3002",
+		socketServerUrl: env.socketServerUrl || "http://localhost:3001",
 		bundleAnalyze: env.bundleAnalyze,
 		paths,
 	});

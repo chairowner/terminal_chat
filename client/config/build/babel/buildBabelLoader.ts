@@ -1,5 +1,3 @@
-import { BuildOptions } from "../types/types";
-
 export function buildBabelLoader() {
 	return {
 		test: /\.tsx?$/,

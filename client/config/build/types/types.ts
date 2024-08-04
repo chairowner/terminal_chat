@@ -11,6 +11,7 @@ export type BuildPlatform = "mobile" | "desktop";
 
 export interface BuildOptions {
 	serverUrl: string;
+	phpMyAdminUrl: string | null;
 	socketServerUrl: string;
 	port: number;
 	paths: BuildPaths;
