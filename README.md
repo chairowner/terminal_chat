@@ -26,18 +26,19 @@ Please inform me that you have taken the code. I will be glad to see your final 
 ## Startup / Запуск
 
 First, install **docker-compose** / **Docker Desktop**. It will be used to launch the database.\
-You can also run it via **Docker Swarm** `./stack.yml`
+You can also run it via **Docker Swarm** `./stack.prod.yml`/`./stack.dev.yml` (for dev, you need to build the client part yourself via `npn run build`)
 
 ---
 
 Для начала установите **docker-compose** / **Docker Desktop**. С его помощью будет запускаться база данных.\
-Также можно запустить через **Docker Swarm** `./stack.yml`
+Также можно запустить через **Docker Swarm** `./stack.prod.yml`/`./stack.dev.yml` (для dev необходимо самостоятельно собирать клиентскую часть через `npn run build`)
 
 - `docker build -t local/terminal_chat_client:latest -f ./docker/client/Dockerfile .`
 - `docker build -t local/terminal_chat_server:latest -f ./docker/server/Dockerfile .`
-- `docker stack deploy -c ./stack.yml --detach=false terminal_chat`
+- `docker stack deploy -c ./stack.prod.yml --detach=false terminal_chat`
 
-### Windows
+### Additional / Дополнительно
+#### Windows
 
 Register `start dev.bat` from the root directory of the project
 
@@ -45,8 +46,8 @@ Register `start dev.bat` from the root directory of the project
 
 Прописать `start dev.bat` из корневой директории проекта
 
-### Linux
+#### Linux
 
-1. `docker-compose -p terminal_chat up -d --build`
+1. `docker-compose -f ./compose.database.yml -p terminal_chat up -d --build`
 2. `cd ./server && npm i && npm run dev`
 3. `cd ./client && npm i && npm run dev`
